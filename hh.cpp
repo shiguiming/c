@@ -1,62 +1,64 @@
+//写一个进制转换感觉很复杂
+//不知道怎么写先去找找进制转换是怎么搞的
 #include <stdio.h>
 
-#define MAXCHAR 101  /*��������ַ�������*/
+#define MAXCHAR 101  /*最大允许字符串长度*/
 
-int char_to_num(char ch);  /*�����ַ���Ӧ������*/
-char num_to_char(int num);  /*�������ֶ�Ӧ���ַ�*/
-long source_to_decimal(char temp[], int source);  /*������ԭ��ת���ɵ�10������*/
-int decimal_to_object(char temp[], long decimal_num, int object);  /*����ת����Ŀ�����ƺ��ַ�����ĳ���*/
-void output(char temp[], int length);  /*���ַ����������ӡ*/
+int char_to_num(char ch);  /*返回字符对应的数字*/
+char num_to_char(int num);  /*返回数字对应的字符*/
+long source_to_decimal(char temp[], int source);  /*返回由原数转换成的10进制数*/
+int decimal_to_object(char temp[], long decimal_num, int object);  /*返回转换成目标数制后字符数组的长度*/
+void output(char temp[], int length);  /*将字符数组逆序打印*/
 
 int main()
 {
-	int source;  /*�洢ԭ����*/
-	int object;  /*�洢Ŀ������*/
-	int length;  /*�洢ת����Ŀ�����ƺ��ַ�����ĳ���*/
-	long decimal_num;  /*�洢ת���ɵ�10������*/
-	char temp[MAXCHAR];  /*�洢��ת������ֵ��ת�������ֵ*/
-	int flag = 1;  /*�洢�Ƿ��˳�����ı�־*/
-	while (flag)  /*���������flagֵ����ѭ���Ƿ����*/
+	int source;  /*存储原数制*/
+	int object;  /*存储目标数制*/
+	int length;  /*存储转换成目标数制后字符数组的长度*/
+	long decimal_num;  /*存储转换成的10进制数*/
+	char temp[MAXCHAR];  /*存储待转换的数值和转换后的数值*/
+	int flag = 1;  /*存储是否退出程序的标志*/
+	while (flag)  /*利用输入的flag值控制循环是否结束*/
 	{
-		printf("ת��ǰ�����ǣ�");
+		printf("转换前的数是：");
 		scanf("%s", temp);
-		printf("ת��ǰ�������ǣ�");
+		printf("转换前的数制是：");
 		scanf("%d", &source);
-		printf("ת����������ǣ�");
+		printf("转换后的数制是：");
 		scanf("%d", &object);
-		printf("ת��������ǣ�");
+		printf("转换后的数是：");
 		decimal_num = source_to_decimal(temp, source);
 		length = decimal_to_object(temp, decimal_num, object);
 		output(temp, length);
-		printf("����������1,��������0��\n");
+		printf("继续请输入1,否则输入0：\n");
 		scanf("%d", &flag);
 	}
 
 	return 0;
 }
-/*���ַ�ת��������*/
+/*将字符转换成数字*/
 int char_to_num(char ch)
 {
 	if (ch >= '0' && ch <= '9')
-		return ch - '0';  /*�������ַ�ת��������*/
+		return ch - '0';  /*将数字字符转换成数字*/
 	else
-		return ch - 'A' + 10;  /*����ĸ�ַ�ת��������*/
+		return ch - 'A' + 10;  /*将字母字符转换成数字*/
 }
 char num_to_char(int num)
 {
 	if (num >= 0 && num <= 9)
-		return (char)('0' + num - 0);  /*��0~9֮�������ת�����ַ�*/
+		return (char)('0' + num - 0);  /*将0~9之间的数字转换成字符*/
 	else
-		return (char)('A' + num - 10);  /*������10������ת�����ַ�*/
+		return (char)('A' + num - 10);  /*将大于10的数字转换成字符*/
 }
 long source_to_decimal(char temp[], int source)
 {
-	long decimal_num = 0;  /*�洢չ��֮��ĺ�*/
+	long decimal_num = 0;  /*存储展开之后的和*/
 	int length;
 	int i;
 	for (i = 0; temp[i] != '\0'; i++);
 	length = i;
-	for (i = 0; i <= length - 1; i++)  /*�ۼ�*/
+	for (i = 0; i <= length - 1; i++)  /*累加*/
 		decimal_num = (decimal_num * source) + char_to_num(temp[i]);
 	return decimal_num;
 }
@@ -65,8 +67,8 @@ int decimal_to_object(char temp[], long decimal_num, int object)
 	int i = 0;
 	while (decimal_num)
 	{
-		temp[i] = num_to_char(decimal_num % object);  /*���������ת��Ϊ�ַ�*/
-		decimal_num = decimal_num / object;  /*��ʮ���������Ի���*/
+		temp[i] = num_to_char(decimal_num % object);  /*求出余数并转换为字符*/
+		decimal_num = decimal_num / object;  /*用十进制数除以基数*/
 		i++;
 	}
 	temp[i] = '\0';
@@ -75,7 +77,7 @@ int decimal_to_object(char temp[], long decimal_num, int object)
 void output(char temp[], int length)
 {
 	int i;
-	for (i = length - 1; i >= 0; i--)  /*���temp�����е�ֵ*/
+	for (i = length - 1; i >= 0; i--)  /*输出temp数组中的值*/
 		printf("%c", temp[i]);
 	printf("\n");
 }
